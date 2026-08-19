@@ -1,0 +1,61 @@
+A2A is designed to handle agent work that can be asynchronous, long-running, incremental, and stateful. not just request -> response
+A2A concepts
+
+1.Task - A Task represents the actual piece of work that an agent has been asked to perform.
+ ├── Messages
+ ├── Status
+ └── Artifacts
+ex. create a sales report.
+this request becomes task. It has identity so that everyone knows what we are talking about.
+Why need it?
+Because agent work isn't always instant. If agent is taking some min/hrs we need to keep track of that some way.
+Without task concept we would be facing trouble answering "which request is this response associated with?
+- Messages: a communication between participants.
+ex. Agent A to Agent B: create a sales report
+Task: create sales report
+Message: 
+   user -> agent A: create the report
+   agent A -> user: i'll start working on It
+   user -> agent A: also include february
+NOTE: TASK represents work and MESSAGE represent communication related to the work.
+- TaskState: After having task, but what is going on with it. Basically it tells - "where is task in its lifecycle" or in simpler terms
+"at stage it is now". half way through/75% over/failed/more input required.
+- Artifact: It is basically a result/output produced by the agent.
+ex. suppose agent B has asked - create a sales report. It produces  a sales report "sales_report.pdf". That pdf is ARTIFACT.
+Artifact can be anything - song/video/pdf/JSON response, etc.
+
+2. Events
+ ├── Status update event
+ └── Artifact update event
+- TaskStatusUpdateEvent: Task progress/Status notification
+ex. agent B is workking on a sales_report which taking some time, in mean time agent A becomes curious and ask agent B about update,
+agent B responds "working". After finishing "completed".
+- TaskArtifactUpdateEvent: Rather than waiting until absolutely everything is finished, the system can communicate artifact updates as 
+work progresses. This becomes particularly useful for streaming or incremental results.
+ex. artifact update 1 -> january data,
+    artifact update 2 -> february data,
+    artifact update 3 -> march data
+Basically it is sending updates of artifacts on a long running task.
+
+3. TaskUpdater
+ └── Helps the agent produce those events
+A TaskUpdater is essentially a helper/utility that makes it easier for your agent implementation to communicate task progress and 
+results. Instead of manually setting all updates it a2a does it for us as - updater.update_status("working"), also useful for
+updater.add_artifact(report).
+TaskUpdater is a convenience layer for updating a Task and publishing the appropriate events.
+
+4. EventQueue
+ └── Carries those events to whoever is listening
+We have events: TaskArtifactUpdateEvent and TaskStatusUpdateEvent
+But how do they travel from the agent's execution logic to the thing that is communicating with the other agent?
+That's where an EventQueue comes in. This is like a wating line events.
+agent's work --(produces)--> EventQueue --> A2A communication layer --> Other agent/client
+EventQueue holds -> status:working, artifacts:report, status: completed
+The agent can puts event into queue. 
+
+await event_queue.put(status_event)                 another componen can consume them:
+await event_queue.put(artifact_event)               event = await event_queue.get()
+await event_queue.put(completed_event)
+Why it is needed?
+Because in middle of work i got an update my agent logic doesn't need to directly manage the network connection, a2a server/communication
+layer can handle delivering that update. The agent will just say: I've got an update put it in queue.
