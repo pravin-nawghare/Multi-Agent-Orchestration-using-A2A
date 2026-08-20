@@ -1,0 +1,49 @@
+# Langchain Core
+langchain
+langchain-core
+langchain-community
+langchain-text-splitters
+langgraph
+langgraph-checkpoint-sqlite # local database
+
+
+# Google Gemini (PaLM) Integration
+langchain-google-genai
+google-generativeai
+
+# Groq Api
+langchain-groq
+
+# Environment variable Management
+python-dotenv 
+python-multipart
+
+
+# for fast storage and retrieval used only with hugging face --> not installed yet
+# hf-xet
+
+# Data Validation
+pydantic
+
+# To visualize pipeline (chains)
+grandalf
+
+
+# Jupyter Notebook Support
+ipykernel
+
+# For ui
+streamlit
+
+# API
+fastapi
+uvicorn
+jinja2
+
+langchain-tavily
+tavily-python
+sqlalchemy
+
+langchain-mcp-adapters
+nest_asyncio
+mcp
