@@ -5,3 +5,7 @@ langchain-core
 langchain-google-genai
 google-generativeai
 python-dotenv
+a2a_sdk
+uvicorn
+starlette
+sse-starlette

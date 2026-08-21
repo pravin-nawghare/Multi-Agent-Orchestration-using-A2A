@@ -9,8 +9,10 @@ import asyncio
 
 load_dotenv()
 
-
+# Step 1: Agent and Tool
 class AliceAgent():
+    SUPPORTED_CONTENT_TYPES = ["text", "text/plain"]
+
     def __init__(self):
         self.model = "gemini-2.5-flash"
         self.tools = [get_availablity] if get_availablity else []
