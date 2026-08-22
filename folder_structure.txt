@@ -1,0 +1,108 @@
+D:.
+│   .env
+│   .gitignore
+│   .python-version
+│   a2a_workflow.excalidraw
+│   config.py
+│   docs.txt
+│   LICENSE
+│   main.py
+│   pyproject.toml
+│   README.md
+│   requirements.txt
+│   test.ipynb
+│   test.py
+│   
+├───.vscode
+│       settings.json
+│       
+├───backend
+│   │   main.py
+│   │   
+│   └───__pycache__
+│           main.cpython-313.pyc
+│           
+├───components
+│   │   utils.py
+│   │   __init__.py
+│   │   
+│   ├───agents
+│   │   │   __init__.py
+│   │   │   
+│   │   ├───alice_agent
+│   │   │       agent.py
+│   │   │       agent_executor.py
+│   │   │       alice_requirements.txt
+│   │   │       tools.py
+│   │   │       __init__.py
+│   │   │       __main__.py
+│   │   │       
+│   │   ├───bob_agent
+│   │   │       __init__.py
+│   │   │       
+│   │   ├───max_agent
+│   │   │       __init__.py
+│   │   │       
+│   │   ├───travel_agent
+│   │   │   │   final_response_agent.py
+│   │   │   │   flight_agent.py
+│   │   │   │   hotel_agent.py
+│   │   │   │   itinerary_agent.py
+│   │   │   │   weather_agent.py
+│   │   │   │   __init__.py
+│   │   │   │   
+│   │   │   └───__pycache__
+│   │   │           final_response_agent.cpython-313.pyc
+│   │   │           flight_agent.cpython-313.pyc
+│   │   │           hotel_agent.cpython-313.pyc
+│   │   │           itinerary_agent.cpython-313.pyc
+│   │   │           __init__.cpython-313.pyc
+│   │   │           
+│   │   └───__pycache__
+│   │           __init__.cpython-313.pyc
+│   │           
+│   ├───database
+│   │       database_setup.py
+│   │       __init__.py
+│   │       
+│   ├───graph
+│   │   │   state.py
+│   │   │   workflow.py
+│   │   │   __init__.py
+│   │   │   
+│   │   └───__pycache__
+│   │           state.cpython-313.pyc
+│   │           workflow.cpython-313.pyc
+│   │           __init__.cpython-313.pyc
+│   │           
+│   ├───mcp_clients
+│   │       __init__.py
+│   │       
+│   ├───prompts
+│   │   │   final_response_prompt.py
+│   │   │   flight_prompt.py
+│   │   │   itineary_prompt.py
+│   │   │   __init__.py
+│   │   │   
+│   │   └───__pycache__
+│   │           final_response_prompt.cpython-313.pyc
+│   │           itineary_prompt.cpython-313.pyc
+│   │           __init__.cpython-313.pyc
+│   │           
+│   ├───tools
+│   │   │   flight_tool.py
+│   │   │   websearch_tool.py
+│   │   │   __init__.py
+│   │   │   
+│   │   └───__pycache__
+│   │           flight_tool.cpython-313.pyc
+│   │           websearch_tool.cpython-313.pyc
+│   │           __init__.cpython-313.pyc
+│   │           
+│   └───__pycache__
+│           utils.cpython-313.pyc
+│           __init__.cpython-313.pyc
+│           
+├───frontend
+└───__pycache__
+        config.cpython-313.pyc
