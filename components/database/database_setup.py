@@ -8,7 +8,7 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 Path("db").mkdir(exist_ok=True)
 
 database_url = setting.DATABASE_URL
-print("inside database.py file and data folder and db url created\n")
+print("inside database_setup.py file and data folder and db url created\n")
 engine = create_engine(
     database_url,
     connect_args = {"check_same_thread": False}

@@ -6,7 +6,7 @@ load_dotenv()
 
 class Settings():
     TAVILY_API_KEY: str = os.getenv("TAVILY_API_KEY")
-    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY")
+    GEMINI_API_KEY: str = os.getenv("GOOGLE_API_KEY")
     GROQ_API_KEY: str = os.getenv("GROQ_API_KEY")
     AVIATIONSTACK_API_KEY: str = os.getenv("AVIATIONSTACK_API_KEY")
 
@@ -18,7 +18,7 @@ class Settings():
 
     # Threading (for database storage)
     CURRENT_THREAD_ID = "default"
-    DATABASE_URL = "sqlite:///data/chatbot_memory.db"
+    DATABASE_URL = "sqlite:///db/travelagent_memory.db"
 
     # Run the fastapi server
     APP_PORT = os.getenv("APP_PORT")

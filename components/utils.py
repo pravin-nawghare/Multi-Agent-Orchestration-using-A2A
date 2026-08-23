@@ -300,7 +300,7 @@ def parse_route(query: str):
     DAC, None   -> all flights from DAC
     None, NRT   -> all flights to NRT
     """
-
+    
     q = query.strip()
     q_lower = q.lower()
 

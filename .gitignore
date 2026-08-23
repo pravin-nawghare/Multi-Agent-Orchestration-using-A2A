@@ -216,3 +216,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# database
+db
+
+# folder structure
+folder_structure.md
