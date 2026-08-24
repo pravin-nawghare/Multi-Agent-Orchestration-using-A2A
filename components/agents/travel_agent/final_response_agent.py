@@ -21,7 +21,7 @@ def final_response(state: AgentState):
         travellers = state.get("travellers", ""),
         flight_result = state.get("flight_result", ""),
         hotel_result = state.get("hotel_result", ""),
-        itinerary = state.get("itineary_result", ""),
+        itineary_result = state.get("itineary_result", ""),
         weather_result = state.get("weather_result", "")
     )
 
@@ -30,7 +30,7 @@ def final_response(state: AgentState):
         HumanMessage(content=prompt)
     ])
 
-    print(f"final_response_agent response added in messages: {response}")
+    # print(f"final_response_agent response added in messages: {response}")
 
     return {
         'messages': [response],

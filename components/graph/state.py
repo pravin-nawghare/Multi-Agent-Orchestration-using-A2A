@@ -18,7 +18,7 @@ class AgentState(TypedDict):
     hotel_result: str
     itineary_result: str
     approved: bool
-    travellers: int | None = 2
+    travellers: int | None 
     start_date: str | None   # ISO 8601 format -> "2026-08-31"
     
 
@@ -49,5 +49,5 @@ def initial_state(query: str, tourist_count: int = 2) -> dict:
         "itineary_result": "",
         "approved": False,
         "travellers": tourist_count,
-        "start_date": str
+        "start_date": None
     }

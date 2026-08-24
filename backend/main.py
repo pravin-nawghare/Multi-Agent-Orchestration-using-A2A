@@ -22,9 +22,9 @@ def run_trip_planner_agent(user_query: str, thread_id: str | None):
 
     return {
         "thread_id": thread_id,
-        "answer": final_result,
-        "flight_results": final_state.get("flight_result", ""),
-        "hotel_results": final_state.get("hotel_result", ""),
-        "itinerary": final_state.get("itinerary_result", ""),
+        "final_result": final_result,
+        "flight_result": final_state.get("flight_result", ""),
+        "hotel_result": final_state.get("hotel_result", ""),
+        "itineary_result": final_state.get("itineary_result", ""),
         "travellers": final_state.get("travellers", "")
     }

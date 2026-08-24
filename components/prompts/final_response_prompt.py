@@ -5,10 +5,10 @@ response_prompt = PromptTemplate(
     input_variables = [
         "user_query",
         "travellers",
-        "flight_results",
-        "hotel_results",
-        "weather_results",
-        "itinerary"
+        "flight_result",
+        "hotel_result",
+        "weather_result",
+        "itineary_result"
     ],
 template = """
     Generate the final travel response for the user.
@@ -28,8 +28,8 @@ template = """
     Weather:
     {weather_result}
 
-    Itinerary:
-    {itinerary_result}
+    Itineary:
+    {itineary_result}
 
     Format the final answer beautifully using these sections:
 

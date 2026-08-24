@@ -69,6 +69,6 @@ from backend.main import run_trip_planner_agent
 user_input = input("Enter travel request: ")
 response = run_trip_planner_agent(user_input,thread_id=None)
 
-print("Final Respopnse\n")
-print(response['answer'])
+#print("Final Respopnse\n")
+#print(response['answer'])
 
