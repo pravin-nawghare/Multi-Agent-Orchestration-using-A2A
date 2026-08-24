@@ -19,7 +19,7 @@ class AgentState(TypedDict):
     itineary_result: str
     approved: bool
     travellers: int | None = 2
-    date: str | None   # ISO 8601 format -> "2026-08-31"
+    start_date: str | None   # ISO 8601 format -> "2026-08-31"
     
 
 def initial_state(query: str, tourist_count: int = 2) -> dict:
@@ -36,18 +36,18 @@ def initial_state(query: str, tourist_count: int = 2) -> dict:
     try: # convert given into iso format
         dt = parser.parse(query, fuzzy=True)
         formatted_date = dt.date().isoformat()
-    except: # no date provided then 2 day's after date is used by default
+    except(ValueError, OverflowError): # no date provided then 2 day's after date is used by default
         default_date = date.today() + timedelta(days=2)
         formatted_date = default_date.isoformat()
 
     return {
         "messages": [],
-        "user_query": HumanMessage(content=query),
+        "user_query": query,
         "flight_result": "",
         "weather_result": "",
         "hotel_result": "",
         "itineary_result": "",
         "approved": False,
         "travellers": tourist_count,
-        "date": formatted_date
+        "start_date": str
     }

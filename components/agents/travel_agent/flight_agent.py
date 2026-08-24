@@ -16,11 +16,11 @@ flight_model = ChatGoogleGenerativeAI(
 )
 
 def flight_agent(state: AgentState) -> dict:
-    query = state['user_query'].content
+    query = state.get('user_query', "")
     # search for flights based on user travel destination
     response = search_flights(query=query)
 
-    print(f"flight_agent: {response}\n")
+    # print(f"flight_agent: {response}\n")
 
     return {
         "flight_result": response,

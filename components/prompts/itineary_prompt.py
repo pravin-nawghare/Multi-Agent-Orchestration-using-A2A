@@ -1,22 +1,33 @@
-from components.graph.state import AgentState
+from langchain_core.prompts import PromptTemplate
 
 
-def itineary_agent_prompt(state: AgentState):
-    return f"""
+itineary_agent_prompt = PromptTemplate(
+    input_variables = [
+        "user_query",
+        "travellers",
+        "flight_result",
+        "hotel_result",
+        "weather_result"
+    ],
+    template = """
     Create a complete travel itinerary.
 
     User Query:
-    {state['user_query']}
+    {user_query}
+
+    Number of travellers:
+    {travellers}
 
     Flight Results:
-    {state['flight_result']}
+    {flight_result}
 
     Hotel Results:
-    {state['hotel_result']}
+    {hotel_result}
 
     Weather Results:
-    {state['weather_result']}
+    {weather_result}
 
     Make the itinerary practical, budget-aware, and easy to follow.
     """
+)
 

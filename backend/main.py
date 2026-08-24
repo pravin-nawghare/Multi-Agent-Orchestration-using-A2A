@@ -12,26 +12,11 @@ def run_trip_planner_agent(user_query: str, thread_id: str | None):
         }
     }
 
-    final_state = None 
 
-    for state in trip_graph.stream(
+    final_state = trip_graph.invoke(
         initial_state(user_query), #no {} because they create a set and langgraph cannot use them gives error-2
-        config = config,
-        stream_mode="values"
-    ):
-        print("\n" + "=" * 80)
-        print("State after node execution")
-        print("=" * 80)
-
-        for key, value in state.items():
-            if key == 'messages':
-                print(f"{key}: ")
-                for message in value:
-                    print(f" [{message.type}] {message.content}")
-            else:
-                print(f"{key}: {value}")
-
-        final_state = state
+        config = config
+    )
 
     final_result = final_state['messages'][-1].content
 
@@ -41,4 +26,5 @@ def run_trip_planner_agent(user_query: str, thread_id: str | None):
         "flight_results": final_state.get("flight_result", ""),
         "hotel_results": final_state.get("hotel_result", ""),
         "itinerary": final_state.get("itinerary_result", ""),
+        "travellers": final_state.get("travellers", "")
     }

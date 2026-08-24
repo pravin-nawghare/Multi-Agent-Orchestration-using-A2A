@@ -2,7 +2,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import SystemMessage, HumanMessage
 from config import setting
 from components.graph.state import AgentState
-from components.prompts.itineary_prompt import ITINERARY_AGENT_PROMPT
+from components.prompts.itineary_prompt import itineary_agent_prompt
 
 
 itineary_llm = setting.GEMINI_MODEL
@@ -17,7 +17,13 @@ itineary_model = ChatGoogleGenerativeAI(
 )
 
 def itineary_agent(state: AgentState) -> dict:
-    itineary_prompt = ITINERARY_AGENT_PROMPT
+    itineary_prompt = itineary_agent_prompt.format(
+        user_query = state.get("user_query", ""),
+        travellers = state.get("travellers", ""),
+        flight_result = state.get("flight_result", ""),
+        weather_result = state.get("weather_result", ""),
+        hotel_result = state.get("hotel_result", "")
+    )
 
     response = itineary_model.invoke([
         SystemMessage(content="You are an expert travel planner"),

@@ -17,7 +17,7 @@ hotel_model = ChatGoogleGenerativeAI(
 )
 
 def hotel_agent(state: AgentState) -> dict:
-    query = f"Find best hotels for {state['user_query'].content}"
+    query = f"Find best hotels for {state.get('user_query', "")}"
     result  = internet_search(query=query)
 
     return {

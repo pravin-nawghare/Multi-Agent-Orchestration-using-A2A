@@ -1,7 +1,7 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import SystemMessage, HumanMessage
 from config import setting
-from components.prompts.final_response_prompt import FINAL_RESPONSE_PROMPT
+from components.prompts.final_response_prompt import response_prompt
 from components.graph.state import AgentState
 
 response_llm = setting.GEMINI_MODEL
@@ -16,11 +16,18 @@ response_model = ChatGoogleGenerativeAI(
 )
 
 def final_response(state: AgentState):
-    response_prompt = FINAL_RESPONSE_PROMPT
+    prompt = response_prompt.format(
+        user_query = state.get("user_query", ""),
+        travellers = state.get("travellers", ""),
+        flight_result = state.get("flight_result", ""),
+        hotel_result = state.get("hotel_result", ""),
+        itinerary = state.get("itineary_result", ""),
+        weather_result = state.get("weather_result", "")
+    )
 
     response = response_model.invoke([
         SystemMessage(content="You are a professional AI travel booking assistant"),
-        HumanMessage(content=response_prompt)
+        HumanMessage(content=prompt)
     ])
 
     print(f"final_response_agent response added in messages: {response}")

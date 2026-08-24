@@ -1,24 +1,35 @@
-from components.graph.state import AgentState
+from langchain_core.prompts import PromptTemplate
 
 
-def response_prompt(state: AgentState):
-    return  f"""
+response_prompt = PromptTemplate(
+    input_variables = [
+        "user_query",
+        "travellers",
+        "flight_results",
+        "hotel_results",
+        "weather_results",
+        "itinerary"
+    ],
+template = """
     Generate the final travel response for the user.
 
     User Request:
-    {AgentState['user_query']}
+    {user_query}
+
+    Number of travellers:
+    {travellers}
 
     Flights:
-    {AgentState['flight_results']}
+    {flight_result}
 
     Hotels:
-    {AgentState['hotel_results']}
+    {hotel_result}
 
     Weather:
-    {AgentState['weather_results']}
+    {weather_result}
 
     Itinerary:
-    {AgentState['itinerary']}
+    {itinerary_result}
 
     Format the final answer beautifully using these sections:
 
@@ -36,3 +47,4 @@ def response_prompt(state: AgentState):
     - Include weather-based travel advice.
     - Keep the response useful for real travel planning.
 """
+)
