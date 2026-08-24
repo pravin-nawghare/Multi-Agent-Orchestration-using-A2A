@@ -71,8 +71,10 @@ st.markdown(
     ------------------------------------------------------- */
 
     .hero {
+        width: 100%;
         text-align: center;
         padding: 65px 20px 35px 20px;
+        box-sizing: border-box;
     }
 
     .hero-badge {
@@ -108,11 +110,15 @@ st.markdown(
     }
 
     .hero-subtitle {
-        max-width: 650px;
-        margin: 24px auto 0 auto;
+        display: block;
+        width: 100%;
+        max-width: 700px;
+        margin: 24px auto 0 auto !important;
+        padding: 0 important;
         color: #858585;
         font-size: 17px;
         line-height: 1.6;
+        text-align: center !important;
     }
 
 
@@ -403,29 +409,15 @@ def render_metric(icon, label, value):
 # HERO
 # ============================================================
 
-st.markdown(
-    """
-    <div class="hero">
+hero_html = """
+<div class="hero">
+    <div class="hero-badge">✦ AI-POWERED TRAVEL PLANNER</div>
+    <h1 class="hero-title">Your next trip,<br><span>planned intelligently.</span></h1>
+    <p class="hero-subtitle">Tell us where you want to go, when you want to travel, and what kind of experience you're looking for. Our AI agents will handle the rest.</p>
+</div>
+"""
 
-        <div class="hero-badge">
-            ✦ AI-POWERED TRAVEL PLANNER
-        </div>
-
-        <h1 class="hero-title">
-            Your next trip,<br>
-            <span>planned intelligently.</span>
-        </h1>
-
-        <p class="hero-subtitle">
-            Tell us where you want to go, when you want to travel,
-            and what kind of experience you're looking for.
-            Our AI agents will handle the rest.
-        </p>
-
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+st.markdown(hero_html,unsafe_allow_html=True)
 
 
 # ============================================================
@@ -694,7 +686,7 @@ if "trip_result" in st.session_state:
         )
 
         pretty_json(
-            result.get("flight_results")
+            result.get("flight_result")
         )
 
     # --------------------------------------------------------
@@ -717,7 +709,7 @@ if "trip_result" in st.session_state:
         )
 
         pretty_json(
-            result.get("hotel_results")
+            result.get("hotel_result")
         )
 
     # --------------------------------------------------------
@@ -739,12 +731,12 @@ if "trip_result" in st.session_state:
             unsafe_allow_html=True,
         )
 
-        itinerary = result.get("itinerary")
+        itineary = result.get("itineary")
 
-        if isinstance(itinerary, str):
-            st.markdown(itinerary)
+        if isinstance(itineary, str):
+            st.markdown(itineary)
         else:
-            pretty_json(itinerary)
+            pretty_json(itineary)
 
     # --------------------------------------------------------
     # TRAVELLERS
