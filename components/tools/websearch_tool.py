@@ -12,7 +12,7 @@ def internet_search(query: str, result: int = 5):
             query = query,
             max_results = result
         )
-        print(f"Inside web search tool")
+        # print(f"Inside web search tool")
         results = []
 
         # extract title, url and text response from web search result

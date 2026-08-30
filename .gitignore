@@ -222,3 +222,10 @@ db
 
 # folder structure
 folder_structure.md
+
+# response for email testing
+email_response.md
+
+# Gmail api secret
+client_secret.json
+token.json
