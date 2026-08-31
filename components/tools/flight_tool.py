@@ -58,36 +58,3 @@ async def aviation_mcp(
 
     return result
 
-def flight_agent(state: AgentState): 
-    input_query = state.get("user_query", "")
-    try:
-        airports = asyncio.run(aviation_mcp(
-            "list_airports"
-        ))
-
-        airlines = asyncio.run(aviation_mcp(
-            "list_airlines"
-        ))
-        print("airports", airports)
-        print("airlines", airlines)
-
-        prompt = FLIGHT_AGENT_PROMPT.format(
-            query=input_query,
-            airport_data = str(airports)[:100],
-            airline_data = str(airlines)[:100]
-        )
-
-        response = flight_model.invoke([
-            SystemMessage(content="You are an expert travel flight planner"),
-            HumanMessage(content=prompt)
-        ])
-
-        flight_data = response.content
-
-    except Exception as e:
-        flight_data = f"flight informatioin unavailable {str(e)}"
-
-    return {
-        "flight_result": flight_data,
-        "messages": [AIMessage(content="flight recommendations generated")]
-    }
