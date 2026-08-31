@@ -229,3 +229,6 @@ email_response.md
 # Gmail api secret
 client_secret.json
 token.json
+
+# old tools
+old_tools

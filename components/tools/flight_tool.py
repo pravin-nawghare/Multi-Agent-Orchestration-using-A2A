@@ -1,80 +1,93 @@
-import requests
-import airportsdata
-
+from components.prompts.flight_prompt import FLIGHT_AGENT_PROMPT
+from components.graph.state import AgentState
+from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
+from langchain_google_genai import ChatGoogleGenerativeAI
 from config import setting
-from components.utils import parse_route, format_flight
-
-key = setting.AVIATIONSTACK_API_KEY
-url = setting.BASE_URL
-default_origin = setting.DEFAULT_ORIGIN_IATA
-
-AIRPORTS = airportsdata.load("IATA")
+import asyncio
+from components.mcp_client.mcp_clients import client
 
 
-def search_flights(query: str, limit: int = 10):
-    if not key:
-        return (
-            "Flight API error: AVIATIONSTACK_API_KEY is missing.\n"
-            "Please add this in your .env file:\n"
-            "AVIATIONSTACK_API_KEY=your_api_key_here"
-        )
+flight_llm = setting.GEMINI_MODEL
+secret_key = setting.GEMINI_API_KEY
 
-    dep_iata, arr_iata = parse_route(query)
+if not secret_key:
+    raise ValueError(f"Api key not provided")
 
-    params = {
-        "access_key": key,
-        "limit": min(limit, 100),
+flight_model = ChatGoogleGenerativeAI(
+    model = flight_llm,
+    api_key = secret_key
+)
+
+flight_tool = {}
+
+async def initialize_tool():
+    "This function will list all the available tools"
+    global flight_tool
+
+    if flight_tool:
+        return
+
+    tools = await client.get_tools()
+
+    print(f"Avaiable tools")
+
+    for tool in tools:
+        print(tool.name)
+    
+    flight_tool = {
+        tool.name: tool
+        for tool in tools
+        if tool.name != "tavily_search_tool"
     }
 
-    if dep_iata:
-        params["dep_iata"] = dep_iata
+async def aviation_mcp(
+        tool_name: str,
+        tool_args: dict = None
+):
+    "This function will search airlines and airports"
+    tools = await client.get_tools()
 
-    if arr_iata:
-        params["arr_iata"] = arr_iata
+    tool = next(
+        t for t in tools
+        if t.name == tool_name
+    )
 
+    result = await tool.ainvoke(
+        tool_args or {}
+    )
+
+    return result
+
+def flight_agent(state: AgentState): 
+    input_query = state.get("user_query", "")
     try:
-        response = requests.get(url, params=params, timeout=30)
-        data = response.json()
-    except requests.exceptions.RequestException as e:
-        return f"Flight API request failed: {e}"
-    except ValueError:
-        return "Flight API returned invalid JSON."
+        airports = asyncio.run(aviation_mcp(
+            "list_airports"
+        ))
 
-    if "error" in data:
-        error = data["error"]
-        return (
-            "Flight API error:\n"
-            f"Code: {error.get('code', 'Unknown')}\n"
-            f"Message: {error.get('message', 'Unknown error')}"
+        airlines = asyncio.run(aviation_mcp(
+            "list_airlines"
+        ))
+        print("airports", airports)
+        print("airlines", airlines)
+
+        prompt = FLIGHT_AGENT_PROMPT.format(
+            query=input_query,
+            airport_data = str(airports)[:100],
+            airline_data = str(airlines)[:100]
         )
 
-    flight_data = data.get("data", [])
+        response = flight_model.invoke([
+            SystemMessage(content="You are an expert travel flight planner"),
+            HumanMessage(content=prompt)
+        ])
 
-    if not flight_data:
-        route_text = ""
+        flight_data = response.content
 
-        if dep_iata and arr_iata:
-            route_text = f" for route {dep_iata} to {arr_iata}"
-        elif dep_iata:
-            route_text = f" from {dep_iata}"
-        elif arr_iata:
-            route_text = f" to {arr_iata}"
+    except Exception as e:
+        flight_data = f"flight informatioin unavailable {str(e)}"
 
-        return (
-            f"No live flight data found{route_text}.\n\n"
-            "Note: AviationStack provides live/status flight data, not ticket prices. "
-            "For actual fare prices, use a flight-pricing API such as Amadeus."
-        )
-
-    route_info = "Global live flights"
-
-    if dep_iata and arr_iata:
-        route_info = f"Live flights from {dep_iata} to {arr_iata}"
-    elif dep_iata:
-        route_info = f"Live flights from {dep_iata}"
-    elif arr_iata:
-        route_info = f"Live flights to {arr_iata}"
-
-    formatted_flights = [format_flight(flight) for flight in flight_data[:limit]]
-
-    return f"{route_info}\n\n" + "\n\n---\n\n".join(formatted_flights)
+    return {
+        "flight_result": flight_data,
+        "messages": [AIMessage(content="flight recommendations generated")]
+    }

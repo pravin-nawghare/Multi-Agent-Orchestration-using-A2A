@@ -73,10 +73,14 @@
 #print(response['answer'])
 
 # from components.tools.websearch_tool import web_search, _get_tavily_search_tool
+from components.prompts.flight_prompt import FLIGHT_AGENT_PROMPT
+from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
+from langchain_google_genai import ChatGoogleGenerativeAI
+from config import setting
 import asyncio
 from components.mcp_client.mcp_clients import client
-import nest_asyncio
-nest_asyncio.apply()
+# import nest_asyncio
+# nest_asyncio.apply()
 
 # async def get_all_tools():
 #     tools = await client.get_tools()
@@ -93,10 +97,93 @@ nest_asyncio.apply()
 # print(type(result))
 # print(result)
 
-async def get_all_tools():
-    tools = await client.get_tools()
-    return tools
+# async def get_all_tools():
+#     tools = await client.get_tools()
+#     return tools
 
-mcp_tools = asyncio.run(get_all_tools()) 
-for tool in mcp_tools:
-    print(tool.name)
+# mcp_tools = asyncio.run(get_all_tools()) 
+# for tool in mcp_tools:
+#     print(tool.name)
+
+search_tool = None
+flight_tool = {}
+
+async def initialize_tool():
+    global search_tool
+    global flight_tool
+
+    if search_tool is not None and flight_tool:
+        return
+
+    tools = await client.get_tools()
+
+    print(f"Avaiable tools")
+
+    for tool in tools:
+        print(tool.name)
+
+    search_tool = next(
+        tool
+        for tool in tools
+        if tool.name == "tavily_search_tool"
+    )
+
+    flight_tool = {
+        tool.name: tool
+        for tool in tools
+        if tool.name != "tavily_search_tool"
+    }
+async def aviation_mcp(
+        tool_name: str,
+        tool_args: dict = None
+):
+    tools = await client.get_tools()
+
+    tool = next(
+        t for t in tools
+        if t.name == tool_name
+    )
+
+    result = await tool.ainvoke(
+        tool_args or {}
+    )
+
+    return result
+llm = ChatGoogleGenerativeAI(model = setting.GEMINI_MODEL)
+def flight_agent(query: str): # state: AgentState
+    print("Inside flight agent")
+
+    input_query = query#state.get("user_query", "")
+    try:
+        airports = asyncio.run(aviation_mcp(
+            "list_airports"
+        ))
+
+        airlines = asyncio.run(aviation_mcp(
+            "list_airlines"
+        ))
+        print("airports", airports)
+        print("airlines", airlines)
+
+        prompt = FLIGHT_AGENT_PROMPT.format(
+            query=input_query,
+            airport_data = str(airports)[:100],
+            airline_data = str(airlines)[:100]
+        )
+
+        response = llm.invoke([
+            SystemMessage(content="You are an expert travel flight planner"),
+            HumanMessage(content=prompt)
+        ])
+
+        flight_data = response.content
+
+    except Exception as e:
+        flight_data = f"flight informatioin unavailable {str(e)}"
+
+    return flight_data # {
+        # "flight_result": flight_data,
+    #     "messages": AIMessage(content="flight recommendations generated")
+    # }
+flight_info = flight_agent(query="Search flights from New Delhi to New York City")
+print(flight_info)

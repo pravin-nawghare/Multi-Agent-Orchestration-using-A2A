@@ -46,7 +46,8 @@ sqlalchemy
 
 langchain-mcp-adapters
 nest_asyncio
-mcp
+mcp # needed mcp<2 because aviation stack mcp is not migrated to v2.0 so it has caused an error
+# therfore mcp cllient code is different for tavily and aviation stack
 
 pycountry
 airportsdata
@@ -56,4 +57,9 @@ google-auth-httplib2
 google-auth-oauthlib
 
 # to read markdown files
-mardown
+# mardown
+
+# To integrate mcp
+mcp
+nest-asyncio
+langchain-mcp-adapters
