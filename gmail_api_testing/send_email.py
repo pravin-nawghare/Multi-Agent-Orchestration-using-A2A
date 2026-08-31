@@ -12,12 +12,6 @@ from googleapiclient.errors import HttpError
 SCOPES = ["https://www.googleapis.com/auth/gmail.send"]
 
 
-
-
-
-SCOPES = ["https://www.googleapis.com/auth/gmail.send"]
-
-
 def load_email_body(source, is_file=True):
     """
     Load Markdown content from a file or use content directly.
