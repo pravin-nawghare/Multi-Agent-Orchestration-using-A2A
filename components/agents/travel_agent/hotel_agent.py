@@ -2,7 +2,8 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import AIMessage
 from config import setting
 from components.graph.state import AgentState
-from components.tools.websearch_tool import internet_search
+from components.tools.websearch_tool import web_search
+import asyncio
 
 
 hotel_llm = setting.GEMINI_MODEL
@@ -18,7 +19,7 @@ hotel_model = ChatGoogleGenerativeAI(
 
 def hotel_agent(state: AgentState) -> dict:
     query = f"Find best hotels for {state.get('user_query', "")}"
-    result  = internet_search(query=query)
+    result  = asyncio.run(web_search(query=query))
 
     return {
         "hotel_result": result,
