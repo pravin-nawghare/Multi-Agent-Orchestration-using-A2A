@@ -72,9 +72,11 @@
 #print("Final Respopnse\n")
 #print(response['answer'])
 
-from components.tools.websearch_tool import web_search, _get_tavily_search_tool
+# from components.tools.websearch_tool import web_search, _get_tavily_search_tool
 import asyncio
 from components.mcp_client.mcp_clients import client
+import nest_asyncio
+nest_asyncio.apply()
 
 # async def get_all_tools():
 #     tools = await client.get_tools()
@@ -84,9 +86,17 @@ from components.mcp_client.mcp_clients import client
 
 # asyncio.run(get_all_tools()) 
 
-web_response = asyncio.run(web_search(query="What is the latest development happended in Amazon Rain forest"))
-print(web_response)
+# web_response = asyncio.run(web_search(query="What is the latest development happended in Amazon Rain forest"))
+# print(web_response)
 
 # result = asyncio.run(_get_tavily_search_tool(client))
 # print(type(result))
 # print(result)
+
+async def get_all_tools():
+    tools = await client.get_tools()
+    return tools
+
+mcp_tools = asyncio.run(get_all_tools()) 
+for tool in mcp_tools:
+    print(tool.name)
