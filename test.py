@@ -62,13 +62,31 @@
 #  'safety_ratings': [], 'model_provider': 'google_genai'}, id='lc_run--019ffb36-7ee1-72c3-8cb8-1b5d46713148-0', 
 #  tool_calls=[], invalid_tool_calls=[], usage_metadata={'input_tokens': 241, 'output_tokens': 123, 
 #  'total_tokens': 364, 'input_token_details': {'cache_read': 0}, 'output_token_details': {'reasoning': 96}})]}
-from backend.main import run_trip_planner_agent
+# from backend.main import run_trip_planner_agent
 # from config import setting
 
 # id = "test-2"
-user_input = input("Enter travel request: ")
-response = run_trip_planner_agent(user_input,thread_id=None)
+# user_input = input("Enter travel request: ")
+# response = run_trip_planner_agent(user_input,thread_id=None)
 
 #print("Final Respopnse\n")
 #print(response['answer'])
 
+from components.tools.websearch_tool import web_search, _get_tavily_search_tool
+import asyncio
+from components.mcp_client.mcp_clients import client
+
+# async def get_all_tools():
+#     tools = await client.get_tools()
+#     print(f"Available tools:")
+#     for tool in tools:
+#         print(tool.name)
+
+# asyncio.run(get_all_tools()) 
+
+web_response = asyncio.run(web_search(query="What is the latest development happended in Amazon Rain forest"))
+print(web_response)
+
+# result = asyncio.run(_get_tavily_search_tool(client))
+# print(type(result))
+# print(result)
