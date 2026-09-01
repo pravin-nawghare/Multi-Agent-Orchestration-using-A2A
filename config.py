@@ -9,6 +9,7 @@ class Settings():
     GEMINI_API_KEY: str = os.getenv("GOOGLE_API_KEY")
     GROQ_API_KEY: str = os.getenv("GROQ_API_KEY")
     AVIATIONSTACK_API_KEY: str = os.getenv("AVIATIONSTACK_API_KEY")
+    OPENWEATHER_API_KEY: str = os.getenv("OPENWEATHER_API_KEY")
 
     # LLM models
     GEMINI_MODEL= "gemini-2.5-flash"
@@ -28,6 +29,9 @@ class Settings():
     #AVIATIONSTACK_API_KEY: str = os.getenv("AVIATIONSTACK_API_KEY")
     BASE_URL = "https://api.aviationstack.com/v1/flights"
     DEFAULT_ORIGIN_IATA = os.getenv("DEFAULT_ORIGIN_IATA", "BOM")
+
+    # Email related
+    EMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.send"
 
 
 setting = Settings()

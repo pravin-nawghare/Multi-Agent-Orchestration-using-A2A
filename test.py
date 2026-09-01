@@ -76,8 +76,8 @@
 # from components.prompts.flight_prompt import FLIGHT_AGENT_PROMPT
 # from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
 # from langchain_google_genai import ChatGoogleGenerativeAI
-# from config import setting
-# import asyncio
+from config import setting
+import asyncio
 from components.mcp_client.mcp_clients import client
 # import nest_asyncio
 # nest_asyncio.apply()
@@ -187,3 +187,30 @@ from components.mcp_client.mcp_clients import client
     # }
 # flight_info = flight_agent(query="Search flights from New Delhi to New York City")
 # print(flight_info)
+
+import asyncio
+import os
+import sys
+
+from mcp import ClientSession, StdioServerParameters
+from mcp.client.stdio import stdio_client
+
+from config import setting
+
+
+async def main():
+
+    server_params = StdioServerParameters(
+    command=r"C:\Users\prave\anaconda3\envs\travel\python.exe",
+    args=[
+        "-m",
+        "components.custom_mcp_server.weather_mcp_server",
+    ],
+    cwd=r"D:\Data-Sorting\Projects\Multi-Agent-Orchestration-using-A2A",
+)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+
+
