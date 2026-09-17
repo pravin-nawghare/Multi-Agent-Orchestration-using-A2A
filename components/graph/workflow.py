@@ -5,6 +5,7 @@ from components.agents.travel_agent.final_response_agent import final_response
 from components.agents.travel_agent.itinerary_agent import itineary_agent
 from components.agents.travel_agent.flight_agent import flight_agent
 from components.agents.travel_agent.hotel_agent import hotel_agent
+from components.agents.travel_agent.weather_agent import weather_agent
 from langgraph.graph import START, END, StateGraph
 from langgraph.checkpoint.sqlite import SqliteSaver
 
@@ -30,13 +31,15 @@ custom_checkpointer = SqliteSaver(connection)
 
 graph = StateGraph(AgentState)
 # add nodes -> agents that defined
+graph.add_node("weather_node", weather_agent)
 graph.add_node("flight_node", flight_agent)
 graph.add_node("hotel_node", hotel_agent)
 graph.add_node("itinerary_node", itineary_agent)
 graph.add_node("response_node", final_response)
 
 # add edges -> connection between nodes
-graph.add_edge(START, "flight_node")
+graph.add_edge(START, "weather_node")
+graph.add_edge("weather_node", "flight_node")
 graph.add_edge("flight_node", "hotel_node")
 graph.add_edge("hotel_node", "itinerary_node")
 graph.add_edge("itinerary_node", "response_node")

@@ -8,10 +8,6 @@ An intelligent travel planning system that coordinates multiple AI agents to gen
 
 [<img src="assests/project_archiecture.excalidraw.png" alt="Project Architecture" height="1000px">](https://github.com/pravin-nawghare/Multi-Agent-Orchestration-using-A2A/blob/main/assests/project_archiecture.excalidraw.png)
 
-![Project Architecture](https://github.com/pravin-nawghare/Multi-Agent-Orchestration-using-A2A/blob/main/assests/project_archiecture.excalidraw "Project")
-
-[<img src="visuals/cylinders.png" alt="Engine Cylinder Configuration" height="400px">](https://github.com/pravin-nawghare/Automotive-Fuel-Economy-Predictior/blob/main/visuals/cylinders.png)
-
 ---
 
 ## 1. Problem Statement
