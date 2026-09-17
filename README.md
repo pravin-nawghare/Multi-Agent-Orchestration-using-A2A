@@ -5,7 +5,7 @@ An intelligent travel planning system that coordinates multiple AI agents to gen
 ---
 
 ## Project Architecture
-![Project Architecture](https://github.com/pravin-nawghare/Multi-Agent-Orchestration-using-A2A/blob/main/assests/project_archiecture.excalidraw)
+![<img src="assests/project_archiecture.excalidraw" alt="Project Architecture" height="1000px">](https://github.com/pravin-nawghare/Multi-Agent-Orchestration-using-A2A/blob/main/assests/project_archiecture.excalidraw)
 
 ---
 
